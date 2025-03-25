@@ -4,9 +4,13 @@ import { FileContext } from "../context/FileContext";
 import Nodata from "./nodata";
 
 const Filetable = ({ fileData, Editkey }) => {
-    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
+    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
+
+    useEffect(() => {
+        setimgstatus(filearr.length === 0 ? true : false);
+    }, [filearr.length])
 
     useEffect(() => {
         if (fileData[0] != null) {
@@ -37,6 +41,7 @@ const Filetable = ({ fileData, Editkey }) => {
             const response = await axios.post("http://192.168.1.78:5000/extract-text", formdata);
             setExtractedData([...response.data.extracted_data]); // Set extracted data
             setRecheckStates(prev => prev.map((state, i) => (i === id ? false : state))); // Enable Re-Check
+            setstatusarr([])
 
         } catch (error) {
             console.error("Error calling API:", error);
