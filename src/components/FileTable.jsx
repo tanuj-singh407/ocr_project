@@ -4,7 +4,7 @@ import { FileContext } from "../context/FileContext";
 import Nodata from "./nodata";
 
 const Filetable = ({ fileData, Editkey }) => {
-    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setstatusarr, submitvalue, setsubmitvalue } = useContext(FileContext);
+    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
 
