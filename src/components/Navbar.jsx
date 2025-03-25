@@ -6,7 +6,7 @@ const Navbar = () => {
             <nav className="navbar bg-white">
                 <div className="container-fluid px-4">
                     <a className="navbar-brand d-flex align-items-center" href="#">
-                        <img src="src\assets\logo_rapI854J.png" alt="Logo" className="d-inline-block align-text-top me-3" />
+                        <img src="src\assets\logo_rapI854J.jpg" alt="Logo" className="d-inline-block align-text-top me-3" />
                         Admin
                     </a>
                 </div>
