@@ -12,19 +12,15 @@ export const FileProvider = ({ children }) => {
     const [editstatus, seteditstatus] = useState(false)
     const [imgstatus, setimgstatus] = useState(true)
     const [recheckstatus, setrecheckstatus] = useState(true);
+    const [submitvalue, setsubmitvalue] = useState(["Submit", false])
 
     useEffect(() => {
         setrecheckstatus((prev) => !prev)
-        // console.log(recheckstatus)   
     }, [extractedData])
 
     useEffect(() => {
         setimgstatus(filearr.length === 0 ? true : false);
     }, [filearr.length])
-
-    // useEffect(() => {
-    //     console.log("Updated statusarr:", statusarr); // Logs when statusarr updates
-    // }, [statusarr]);
 
     return (
         <FileContext.Provider value={{
@@ -32,7 +28,7 @@ export const FileProvider = ({ children }) => {
             setLoadingStates, extractedData, setExtractedData,
             editstatus, seteditstatus, imgstatus,
             setimgstatus, statusarr, setstatusarr,
-            recheckstatus
+            recheckstatus, submitvalue, setsubmitvalue
         }}>
             {children}
         </FileContext.Provider>

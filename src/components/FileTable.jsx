@@ -4,7 +4,7 @@ import { FileContext } from "../context/FileContext";
 import Nodata from "./nodata";
 
 const Filetable = ({ fileData, Editkey }) => {
-    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, statusarr, setstatusarr } = useContext(FileContext);
+    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setstatusarr, submitvalue, setsubmitvalue } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
 
@@ -15,8 +15,6 @@ const Filetable = ({ fileData, Editkey }) => {
             setRecheckStates((prev) => [...prev, true]); // Initially disable Re-Check
         }
     }, [fileData[0]]);
-
-    // console.log(recheckStates)
 
     const deletefile = (idx) => {
         setfilearr(filearr.filter((_, inx) => inx !== idx));
@@ -57,9 +55,9 @@ const Filetable = ({ fileData, Editkey }) => {
         setRecheckStates(prev => prev.map((state, i) => (i === idx ? "checking" : state))); // Show "Checking..."
 
         try {
-            // console.log("Fetching status for index:", idx);
             const response = await axios.get("http://192.168.1.78:5002/verify-japanese");
             setstatusarr(response.data.results);
+            setsubmitvalue(["Submit", false]);
             setRecheckStates(prev => prev.map((state, i) => (i === idx ? false : state))); // Re-enable Re-Check after API call
 
         } catch (error) {
