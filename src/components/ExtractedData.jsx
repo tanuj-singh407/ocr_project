@@ -16,7 +16,6 @@ const ExtractedData = () => {
 
     // Function to handle submission
     const handlesubmission = async () => {
-        console.log("extractedData", extractedData)
 
         try {
             const response = await axios.post(
@@ -24,7 +23,6 @@ const ExtractedData = () => {
                 { headers: { "Content-Type": "application/json" } }
             );
             { response.status == 200 ? setsubmitvalue(["Submitted", true]) : setsubmitvalue(["error in sending", false]) }
-            console.log(response)
         } catch (error) {
             console.error("Error submitting data:", error);
         }
