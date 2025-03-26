@@ -12,7 +12,7 @@ const ExtractedData = () => {
     const [saveindex, setsaveindex] = useState([]);
     const [showIncorrects, setShowIncorrects] = useState(false);
 
-    const datasubmission_api = "http://35.72.9.137:5000/submit/submit"
+    const datasubmission_api = "http://13.113.48.170:5000/submit/submit"
 
     // Function to handle submission
     const handlesubmission = async () => {
