@@ -12,7 +12,7 @@ const ExtractedData = () => {
     const [saveindex, setsaveindex] = useState([]);
     const [showIncorrects, setShowIncorrects] = useState(false);
 
-    const datasubmission_api = "http://192.168.1.78:5000/submit/submit"
+    const datasubmission_api = "http://35.72.9.137:5000/submit/submit"
 
     // Function to handle submission
     const handlesubmission = async () => {
@@ -59,7 +59,7 @@ const ExtractedData = () => {
         <>
             <div className="container-fluid px-5 qdasboard pt-5">
                 <nav className="navbar bg-white text-center">
-                    <div className="container-fluid d-flex justify-content-between">
+                    <div className="container-fluid d-flex justify-content-between gap-1rem">
                         <span className="navbar-brand mb-0 h1">Question Analysis Dashboard</span>
                         <button
                             className={`btn ${showIncorrects ? 'btn-danger' : 'btn-primary'}`}

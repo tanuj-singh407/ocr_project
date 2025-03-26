@@ -7,8 +7,8 @@ const Filetable = ({ fileData, Editkey }) => {
     const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
-    const extract_url = 'http://192.168.1.78:5000/extract/extract-text'
-    const re_check_api = "http://192.168.1.78:5000/verify/verify-japanese"
+    const extract_url = 'http://35.72.9.137:5000/extract/extract-text'
+    const re_check_api = "http://35.72.9.137:5000/verify/verify-japanese"
 
     useEffect(() => {
         setimgstatus(filearr.length === 0 ? true : false);
