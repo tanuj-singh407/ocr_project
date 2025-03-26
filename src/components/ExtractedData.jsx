@@ -12,15 +12,19 @@ const ExtractedData = () => {
     const [saveindex, setsaveindex] = useState([]);
     const [showIncorrects, setShowIncorrects] = useState(false);
 
+    const datasubmission_api = "http://192.168.1.78:5000/submit/submit"
+
     // Function to handle submission
     const handlesubmission = async () => {
+        console.log("extractedData", extractedData)
 
         try {
             const response = await axios.post(
-                "http://192.168.1.78:5003/submit", extractedData,
+                `${datasubmission_api}`, extractedData,
                 { headers: { "Content-Type": "application/json" } }
             );
             { response.status == 200 ? setsubmitvalue(["Submitted", true]) : setsubmitvalue(["error in sending", false]) }
+            console.log(response)
         } catch (error) {
             console.error("Error submitting data:", error);
         }
@@ -44,7 +48,7 @@ const ExtractedData = () => {
 
     // Filter data to show incorrect items first when needed
     const sortedData = showIncorrects
-        ? [...extractedData].sort((a, b) => {
+        ? [...extractedData]?.sort((a, b) => {
             const aStatus = statusarr?.[extractedData.indexOf(a)]?.verification;
             const bStatus = statusarr?.[extractedData.indexOf(b)]?.verification;
             return (aStatus === "Incorrect" ? -1 : 1) - (bStatus === "Incorrect" ? -1 : 1);
@@ -77,7 +81,7 @@ const ExtractedData = () => {
                     {!extractedData && <Nodata heading={"No Question Recognised Yet"} para={"You'll get the data here"} imgsrc={ni} />}
                     <div className="row g-4">
 
-                        {sortedData && sortedData.map((data, idx) => {
+                        {sortedData && sortedData.map((data) => {
                             const originalIndex = extractedData.indexOf(data);
                             const verificationStatus = statusarr?.[originalIndex]?.verification;
 
@@ -123,8 +127,7 @@ const ExtractedData = () => {
                                                             <button
                                                                 type="button"
                                                                 className={`btn ${verificationStatus === "Correct" ? "btn-success" : "btn-danger"}`}
-                                                                disabled
-                                                            >
+                                                                disabled>
                                                                 {verificationStatus}
                                                             </button>
                                                         )

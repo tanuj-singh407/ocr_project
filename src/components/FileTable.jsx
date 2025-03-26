@@ -7,6 +7,8 @@ const Filetable = ({ fileData, Editkey }) => {
     const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
+    const extract_url = 'http://192.168.1.78:5000/extract/extract-text'
+    const re_check_api = "http://192.168.1.78:5000/verify/verify-japanese"
 
     useEffect(() => {
         setimgstatus(filearr.length === 0 ? true : false);
@@ -38,7 +40,7 @@ const Filetable = ({ fileData, Editkey }) => {
         try {
             const formdata = new FormData();
             formdata.append("file", filearr.find((_, idx) => idx == id)?.[1]);
-            const response = await axios.post("http://192.168.1.78:5000/extract-text", formdata);
+            const response = await axios.post(`${extract_url}`, formdata);
             setExtractedData([...response.data.extracted_data]); // Set extracted data
             setRecheckStates(prev => prev.map((state, i) => (i === id ? false : state))); // Enable Re-Check
             setstatusarr([])
@@ -60,7 +62,7 @@ const Filetable = ({ fileData, Editkey }) => {
         setRecheckStates(prev => prev.map((state, i) => (i === idx ? "checking" : state))); // Show "Checking..."
 
         try {
-            const response = await axios.get("http://192.168.1.78:5002/verify-japanese");
+            const response = await axios.get(`${re_check_api}`);
             setstatusarr(response.data.results);
             setsubmitvalue(["Submit", false]);
             setRecheckStates(prev => prev.map((state, i) => (i === idx ? false : state))); // Re-enable Re-Check after API call
