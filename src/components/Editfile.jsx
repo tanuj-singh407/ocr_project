@@ -20,6 +20,7 @@ const Editfile = ({ Key }) => {
         setE_file(file);
         setE_filedetails(fileDetails);
     };
+    
     const edition = () => {
         if (!E_file || !E_filedetails) {
             alert("Please upload a file before saving.");

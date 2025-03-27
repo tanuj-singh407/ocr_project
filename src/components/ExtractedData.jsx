@@ -11,15 +11,13 @@ const ExtractedData = () => {
     const [edittext, setedittext] = useState('');
     const [saveindex, setsaveindex] = useState([]);
     const [showIncorrects, setShowIncorrects] = useState(false);
-
-    const datasubmission_api = "http://13.113.48.170:5000/submit/submit"
-
+    
     // Function to handle submission
     const handlesubmission = async () => {
 
         try {
             const response = await axios.post(
-                `${datasubmission_api}`, extractedData,
+                `${import.meta.env.VITE_API_URL}/submit/submit`, extractedData,
                 { headers: { "Content-Type": "application/json" } }
             );
             { response.status == 200 ? setsubmitvalue(["Submitted", true]) : setsubmitvalue(["error in sending", false]) }
