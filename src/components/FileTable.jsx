@@ -4,9 +4,14 @@ import { FileContext } from "../context/FileContext";
 import Nodata from "./nodata";
 
 const Filetable = ({ fileData, Editkey }) => {
-    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, setstatusarr, setsubmitvalue } = useContext(FileContext);
+    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, statusarr, setstatusarr, setsubmitvalue,
+        loadingvalue, setloadingvalue, loadingdata, setloadingdata
+    } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
+    const [loading, setLoading] = useState(false);
+    const [translateValue, setTranslateValue] = useState(0);
+
 
     useEffect(() => {
         setimgstatus(filearr.length === 0 ? true : false);
@@ -48,14 +53,38 @@ const Filetable = ({ fileData, Editkey }) => {
             alert("Failed to start AI recognition.");
         } finally {
             setLoadingStates(prev => prev.map((state, i) => (i === id ? false : state)));
+            setloadingvalue(0)
+            setloadingdata('')
         }
     };
+
+    useEffect(() => {
+        if (loading) {
+            setTranslateValue(0); // Reset progress
+
+            const interval = setInterval(() => {
+                setTranslateValue((prevValue) => {
+                    const increment = Math.floor(Math.random() * 4 + 4);
+                    const newValue = prevValue + increment;
+                    return newValue >= 97 ? 97 : newValue; // Ensure it never exceeds 100
+                });
+            }, 900);
+
+            return () => clearInterval(interval);
+        }
+    }, [loading]);
+
+
 
     const gettingstatus = async (idx) => {
         if (!filearr[idx]) {
             alert("No file data available!");
             return;
         }
+
+        setTranslateValue(0); // Reset progress first
+        setLoading(true);
+
 
         setRecheckStates(prev => prev.map((state, i) => (i === idx ? "checking" : state))); // Show "Checking..."
 
@@ -69,6 +98,9 @@ const Filetable = ({ fileData, Editkey }) => {
             console.error("Error calling Status API:", error);
             alert("Failed to start Status recognition.");
             setRecheckStates(prev => prev.map((state, i) => (i === idx ? false : state))); // Ensure button is enabled even on error
+        } finally {
+            setLoading(false);
+            setTranslateValue(100);
         }
     };
 
@@ -123,6 +155,22 @@ const Filetable = ({ fileData, Editkey }) => {
                 </table>
 
                 {imgstatus && <Nodata />}
+
+                {loading ?
+                    <><div className="progress position-relative w-50 h-4 bg-white border border-dark rounded-3 overflow-hidden mx-auto" style={{ height: "27px" }}>
+                        <div
+                            className="progress-bar bg-success h-100 rounded-3 transition-all duration-500 ease-in-out"
+                            role="progressbar"
+                            style={{ width: `${translateValue}%` }}
+                            aria-valuemin="0"
+                            aria-valuemax="100">
+
+                        </div>
+                        <span className="position-absolute z-3 start-50 top-0 translate-middle-x mt-n1 text-dark fw-bold fs-6">
+                            {translateValue}%
+                        </span>
+                    </div></>
+                    : ""}
             </div>
         </>
     );

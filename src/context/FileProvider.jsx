@@ -10,6 +10,8 @@ export const FileProvider = ({ children }) => {
     const [editstatus, seteditstatus] = useState(false)
     const [imgstatus, setimgstatus] = useState(true)
     const [submitvalue, setsubmitvalue] = useState(["Submit", false])
+    const [loadingvalue, setloadingvalue] = useState(0);
+    const [loadingdata, setloadingdata] = useState('');
 
     return (
         <FileContext.Provider value={{
@@ -17,7 +19,7 @@ export const FileProvider = ({ children }) => {
             setLoadingStates, extractedData, setExtractedData,
             editstatus, seteditstatus, imgstatus,
             setimgstatus, statusarr, setstatusarr,
-            submitvalue, setsubmitvalue
+            submitvalue, setsubmitvalue, loadingvalue, setloadingvalue, loadingdata, setloadingdata
         }}>
             {children}
         </FileContext.Provider>

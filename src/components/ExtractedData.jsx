@@ -1,17 +1,44 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FileContext } from '../context/FileContext';
-import { ScaleLoader } from "react-spinners";
 import ni from '../assets/yoyoyoy.jpg';
 import Nodata from './nodata';
 import axios from 'axios';
+import socket from '../Socket';
 
 const ExtractedData = () => {
-    const { loadingStates, extractedData, setExtractedData, statusarr, submitvalue, setsubmitvalue } = useContext(FileContext);
+    const { loadingStates, extractedData, setExtractedData,
+        statusarr, submitvalue, setsubmitvalue,
+        loadingvalue, setloadingvalue, loadingdata,
+        setloadingdata } = useContext(FileContext);
+
     const [editingindex, seteditingindex] = useState(null);
     const [edittext, setedittext] = useState('');
     const [saveindex, setsaveindex] = useState([]);
     const [showIncorrects, setShowIncorrects] = useState(false);
-    
+
+
+    useEffect(() => {
+
+        // Connection events
+        socket.on("connect", () => console.log("Connected"));
+
+        // Listen for progress updates
+        socket.on("progress", (data) => {
+
+            setloadingdata(prev => data.step);
+            setloadingvalue(prev => data.progress_percent);
+        });
+
+        socket.on("disconnect", () => console.log("Disconnected"));
+
+        return () => {
+            // Proper cleanup
+            socket.off("progress");
+            socket.off("connect");
+            socket.off("disconnect");
+        };
+    }, []);
+
     // Function to handle submission
     const handlesubmission = async () => {
 
@@ -66,12 +93,18 @@ const ExtractedData = () => {
                         </button>
                     </div>
                 </nav>
+
                 {loadingStates.some(state => state) && (
-                    <div className="text-center mt-5">
-                        <ScaleLoader />
-                        <p>Processing AI recognition...</p>
-                    </div>
+                    <>
+                        <div className="position-relative text-center mt-5 progress w-75 mx-auto" style={{ height: "27px" }}>
+                            <div className="position-absolute w-100 fw-bolder fs-6" style={{ width: `100%`, borderRadius: "20px", zIndex: "999" }}>{loadingvalue}%</div>
+
+                            <div className="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style={{ width: `${loadingvalue}%`, borderRadius: "20px" }}></div>
+                        </div>
+                        <p className='my-4 text-center'>{loadingdata}</p>
+                    </>
                 )}
+
 
                 <div className="container-fluid my-4">
                     {!extractedData && <Nodata heading={"No Question Recognised Yet"} para={"You'll get the data here"} imgsrc={ni} />}
@@ -89,7 +122,7 @@ const ExtractedData = () => {
                                         </div>
                                         <div className="card-body">
                                             <p className="fw-bold card-headings">Answer Number</p>
-                                            <p className="fw-semibold">Q0{originalIndex + 1}</p>
+                                            <p className="fw-semibold">0{originalIndex + 1}</p>
                                             <hr />
                                             <p className="fw-bold card-headings">Answer Image</p>
                                             <div className="text-center">
@@ -142,7 +175,7 @@ const ExtractedData = () => {
                         </button>}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 };
