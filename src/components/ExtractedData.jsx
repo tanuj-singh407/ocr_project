@@ -24,7 +24,6 @@ const ExtractedData = () => {
 
         // Listen for progress updates
         socket.on("progress", (data) => {
-
             setloadingdata(prev => data.step);
             setloadingvalue(prev => data.progress_percent);
         });

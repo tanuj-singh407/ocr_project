@@ -4,8 +4,8 @@ import { FileContext } from "../context/FileContext";
 import Nodata from "./nodata";
 
 const Filetable = ({ fileData, Editkey }) => {
-    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, statusarr, setstatusarr, setsubmitvalue,
-        loadingvalue, setloadingvalue, loadingdata, setloadingdata
+    const { filearr, setfilearr, loadingStates, setLoadingStates, setExtractedData, imgstatus, setimgstatus, setstatusarr, setsubmitvalue,
+        setloadingvalue, setloadingdata
     } = useContext(FileContext);
 
     const [recheckStates, setRecheckStates] = useState([]); // Manage Re-Check button states
@@ -84,8 +84,6 @@ const Filetable = ({ fileData, Editkey }) => {
 
         setTranslateValue(0); // Reset progress first
         setLoading(true);
-
-
         setRecheckStates(prev => prev.map((state, i) => (i === idx ? "checking" : state))); // Show "Checking..."
 
         try {
